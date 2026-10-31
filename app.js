@@ -50,7 +50,17 @@ document.querySelectorAll("[data-team]").forEach(b=>b.onclick=()=>{team=b.datase
 function add(n){currentDate.setDate(currentDate.getDate()+n);render()}
 document.getElementById("prevBtn").onclick=()=>add(-1);document.getElementById("nextBtn").onclick=()=>add(1);document.getElementById("minus15").onclick=()=>add(-15);document.getElementById("plus15").onclick=()=>add(15);document.getElementById("todayBtn").onclick=()=>{currentDate=new Date();currentDate.setHours(12,0,0,0);render()};
 document.getElementById("contacts").innerHTML=contacts.map(c=>`<div class="contact"><strong>${c.name}</strong><div class="actions"><a href="tel:${c.phone}">Chiama</a><a target="_blank" href="https://wa.me/${c.phone.replace(/\D/g,"")}">WhatsApp</a></div></div>`).join("");
-document.querySelectorAll(".bottom button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".bottom button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(b.dataset.view).classList.add("active");scrollTo({top:0,behavior:"smooth"})});
+document.querySelectorAll(".bottom button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".bottom button").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  const target=document.getElementById(b.dataset.view);
+  if(target) target.classList.add("active");
+  if(b.dataset.view==="registro"){
+    try { renderRegister(); } catch(e) { console.error("Errore Registro",e); }
+  }
+  window.scrollTo({top:0,behavior:"smooth"});
+});
 let deferredPrompt;addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;document.getElementById("installBtn").classList.remove("hide")});document.getElementById("installBtn").onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById("installBtn").classList.add("hide")}};
 if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));
 
@@ -91,6 +101,7 @@ function renderRegister(){
 document.getElementById("prevMonth").onclick=()=>{registerDate.setMonth(registerDate.getMonth()-1);renderRegister()}
 document.getElementById("nextMonth").onclick=()=>{registerDate.setMonth(registerDate.getMonth()+1);renderRegister()}
 document.getElementById("printMonth").onclick=()=>window.print();
-renderRegister();
 
-render();
+// Inizializzazione: prima i turni; il Registro viene costruito solo quando viene aperto.
+try { render(); } catch (e) { console.error('Errore rendering turni', e); }
+
