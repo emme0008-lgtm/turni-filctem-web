@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#b30000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Turni FILCTEM">
+<title>Turni FILCTEM CGIL</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+<header><div><b>FILCTEM CGIL</b><small>Turni 6-giornisti · Yokohama TWS</small></div><button id="installBtn" class="hide">Installa</button></header>
+
+<section id="turni" class="view active">
+<div class="teams"><span>Squadra</span><div>
+<button data-team="A">A</button><button data-team="B">B</button><button data-team="C">C</button><button data-team="D">D</button>
+</div></div>
+
+<div class="card" id="shiftCard">
+<div id="dayName" class="day"></div>
+<div id="dateText" class="date"></div>
+<div id="shiftCode" class="code"></div>
+<div id="shiftLabel" class="label"></div>
+<div id="statusNote" class="note"></div>
+</div>
+
+<div class="nav"><button id="prevBtn">‹</button><button id="todayBtn">Oggi</button><button id="nextBtn">›</button></div>
+<div class="jump"><button id="minus15">−15 giorni</button><button id="plus15">+15 giorni</button></div>
+
+<div class="legend">
+<div><b>1°</b><span>Mattina · 06:00–14:00</span></div>
+<div><b>2°</b><span>Pomeriggio · 14:00–22:00</span></div>
+<div><b>3°</b><span>Notte · 22:00–06:00</span></div>
+<div><b>R</b><span>Riposo</span></div>
+</div>
+</section>
+
+<section id="contatti" class="view">
+<h2>Contatta i delegati</h2>
+<p>Chiamata diretta o WhatsApp.</p>
+<div id="contacts"></div>
+</section>
+
+<section id="info" class="view">
+<h2>Info CGIL</h2>
+<div class="links">
+<a href="https://www.collettiva.it/" target="_blank"><b>Collettiva</b><span>Informazione CGIL</span></a>
+<a href="https://www.filctemcgil.it/" target="_blank"><b>FILCTEM CGIL Nazionale</b><span>Sito nazionale</span></a>
+<a href="https://www.filctemlazio.it/" target="_blank"><b>FILCTEM CGIL Lazio</b><span>Sito regionale</span></a>
+</div>
+</section>
+
+<nav class="bottom">
+<button data-view="turni" class="active">Turni</button>
+<button data-view="contatti">Delegati</button>
+<button data-view="info">Info</button>
+</nav>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
