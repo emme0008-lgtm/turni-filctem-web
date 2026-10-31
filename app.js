@@ -48,10 +48,10 @@ document.getElementById("shiftCode").textContent=s.code;document.getElementById(
 card.classList.toggle("rest",!!s.rest);card.classList.toggle("out",!!s.out);}
 document.querySelectorAll("[data-team]").forEach(b=>b.onclick=()=>{team=b.dataset.team;localStorage.setItem("filctem_team",team);render()});
 function add(n){currentDate.setDate(currentDate.getDate()+n);render()}
-prevBtn.onclick=()=>add(-1);nextBtn.onclick=()=>add(1);minus15.onclick=()=>add(-15);plus15.onclick=()=>add(15);todayBtn.onclick=()=>{currentDate=new Date();currentDate.setHours(12,0,0,0);render()};
+document.getElementById("prevBtn").onclick=()=>add(-1);document.getElementById("nextBtn").onclick=()=>add(1);document.getElementById("minus15").onclick=()=>add(-15);document.getElementById("plus15").onclick=()=>add(15);document.getElementById("todayBtn").onclick=()=>{currentDate=new Date();currentDate.setHours(12,0,0,0);render()};
 document.getElementById("contacts").innerHTML=contacts.map(c=>`<div class="contact"><strong>${c.name}</strong><div class="actions"><a href="tel:${c.phone}">Chiama</a><a target="_blank" href="https://wa.me/${c.phone.replace(/\D/g,"")}">WhatsApp</a></div></div>`).join("");
 document.querySelectorAll(".bottom button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".bottom button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(b.dataset.view).classList.add("active");scrollTo({top:0,behavior:"smooth"})});
-let deferredPrompt;addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;installBtn.classList.remove("hide")});installBtn.onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.classList.add("hide")}};
+let deferredPrompt;addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;document.getElementById("installBtn").classList.remove("hide")});document.getElementById("installBtn").onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById("installBtn").classList.add("hide")}};
 if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));
 
 let registerDate=new Date(); registerDate.setDate(1); registerDate.setHours(12,0,0,0);
@@ -61,9 +61,9 @@ function saveReg(d,o){localStorage.setItem(regKey(d),JSON.stringify(o))}
 function mins(v){if(!v||!v.includes(":"))return null;let [h,m]=v.split(":").map(Number);return h*60+m}
 function worked(a,b){a=mins(a);b=mins(b);if(a===null||b===null)return 0;let x=b-a;return x<0?x+1440:x}
 function renderRegister(){
-  monthTitle.textContent=new Intl.DateTimeFormat("it-IT",{month:"long",year:"numeric"}).format(registerDate);
+  document.getElementById("monthTitle").textContent=new Intl.DateTimeFormat("it-IT",{month:"long",year:"numeric"}).format(registerDate);
   const y=registerDate.getFullYear(),m=registerDate.getMonth(),days=new Date(y,m+1,0).getDate();
-  monthList.innerHTML=""; let st=0,mg=0,fe=0,ma=0,pe=0,ua=0,wm=0;
+  const monthListEl=document.getElementById("monthList"); monthListEl.innerHTML=""; let st=0,mg=0,fe=0,ma=0,pe=0,ua=0,wm=0;
   for(let n=1;n<=days;n++){
     const d=new Date(y,m,n,12),o=loadReg(d);
     st+=Number(o.straordinario||0);mg+=Number(o.maggiorazione||0);fe+=o.ferie?1:0;ma+=o.malattia?1:0;pe+=o.permesso?1:0;ua+=o.uscitaAnticipata?1:0;wm+=worked(o.entrata,o.uscita);
@@ -84,13 +84,13 @@ function renderRegister(){
       const save=()=>{const cur=loadReg(d),f=inp.dataset.f;cur[f]=inp.type==="checkbox"?inp.checked:inp.value;saveReg(d,cur)};
       inp.addEventListener(inp.tagName==="TEXTAREA"?"blur":"change",()=>{save(); if(inp.tagName!=="TEXTAREA") renderRegister()});
     });
-    monthList.appendChild(e);
+    monthListEl.appendChild(e);
   }
-  monthTotals.innerHTML=`<div><strong>${Math.floor(wm/60)}h ${wm%60}m</strong><span>Ore entrata/uscita registrate</span></div><div><strong>${st.toFixed(2)}</strong><span>Ore straordinario</span></div><div><strong>${mg.toFixed(2)}</strong><span>Ore maggiorazioni</span></div><div><strong>${ua}</strong><span>Uscite anticipate</span></div><div><strong>${fe}</strong><span>Giorni ferie</span></div><div><strong>${ma}</strong><span>Giorni malattia</span></div><div><strong>${pe}</strong><span>Giorni permesso</span></div>`;
+  document.getElementById("monthTotals").innerHTML=`<div><strong>${Math.floor(wm/60)}h ${wm%60}m</strong><span>Ore entrata/uscita registrate</span></div><div><strong>${st.toFixed(2)}</strong><span>Ore straordinario</span></div><div><strong>${mg.toFixed(2)}</strong><span>Ore maggiorazioni</span></div><div><strong>${ua}</strong><span>Uscite anticipate</span></div><div><strong>${fe}</strong><span>Giorni ferie</span></div><div><strong>${ma}</strong><span>Giorni malattia</span></div><div><strong>${pe}</strong><span>Giorni permesso</span></div>`;
 }
-prevMonth.onclick=()=>{registerDate.setMonth(registerDate.getMonth()-1);renderRegister()}
-nextMonth.onclick=()=>{registerDate.setMonth(registerDate.getMonth()+1);renderRegister()}
-printMonth.onclick=()=>window.print();
+document.getElementById("prevMonth").onclick=()=>{registerDate.setMonth(registerDate.getMonth()-1);renderRegister()}
+document.getElementById("nextMonth").onclick=()=>{registerDate.setMonth(registerDate.getMonth()+1);renderRegister()}
+document.getElementById("printMonth").onclick=()=>window.print();
 renderRegister();
 
 render();
